@@ -46,8 +46,8 @@ extern "C" {
  * @brief   Macros for controlling the on-board LEDs
  * @{
  */
-#define LED0_PIN            GPIO_PIN(0, 10)
-#define LED1_PIN            GPIO_PIN(0, 15)
+#define LED0_PIN            GPIO_PIN(0, 6)
+#define LED1_PIN            GPIO_PIN(0, 7)
 
 #define LED0_ON             gpio_set(LED0_PIN)
 #define LED0_OFF            gpio_clear(LED0_PIN)
