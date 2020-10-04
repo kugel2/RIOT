@@ -134,6 +134,27 @@ int set_digit_enable_decode(int argc, char **argv)
     return 0;
 }
 
+int select_decoder(int argc, char **argv)
+{
+    if (argc != 2) {
+        puts("usage: select_decoder <decoder (0-1)>");
+    } else {
+        uint8_t decoder = atoi(argv[1]);
+
+        if (decoder > 1) {
+            puts("decoder only 0 and 1");
+            return 0;
+        }
+
+        int rc = as1115_select_decoder(&as1115_dev, decoder);
+        if (rc != AS1115_OK) {
+            printf("Select decoder failed! rc=%i\n", rc);
+        }
+    }
+
+    return 0;
+}
+
 int global_intensity(int argc, char **argv)
 {
     if (argc != 2) {
@@ -172,6 +193,7 @@ static const shell_command_t shell_commands[] = {
     { "power_off", "Turn the device off.", power_off },
     { "set_digit", "Set the digit value.", set_digit },
     { "enable_decode", "Enables/disables the decoder of the digit.", set_digit_enable_decode },
+    { "select_decoder", "Select the decoder.", select_decoder },
     { "global_intensity", "Set the global display intensity", global_intensity },
     { "digit_intensity", "Set the intensity of a digit.", set_digit_intensity },
     { "test_disp", "Optical display test.", test_disp },
