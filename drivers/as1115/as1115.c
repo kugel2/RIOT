@@ -220,9 +220,33 @@ int as1115_digit_intensity(as1115_t *dev, uint8_t digit, uint8_t intensity)
     return AS1115_OK;
 }
 
-int as1115_select_decoder(as1115_t dev, uint8_t decoder)
+int as1115_select_decoder(as1115_t *dev, uint8_t decoder)
 {
+    assert(dev);
+    int rc;
+    uint8_t data;
 
+    if (decoder > 1) {
+        return -AS1115_DIGIT_OUT_OF_RANGE_ERROR;
+    }
+
+    rc = _read_reg(dev, AS1115_REG_FEATURE, &data);
+    if (rc != 0) {
+        return rc;
+    }
+
+    if (decoder == 0) {
+        data &= ~(1 << AS1115_BIT_DECODE_SEL);
+    } else {
+        data |= (1 << AS1115_BIT_DECODE_SEL);
+    }
+
+    rc = _write_reg(dev, AS1115_REG_FEATURE, data);
+    if (rc != 0) {
+        return rc;
+    }
+
+    return AS1115_OK;
 }
 
 int as1115_read_keyscanA(as1115_t *dev, uint8_t *data)

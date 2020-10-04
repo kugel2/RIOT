@@ -187,7 +187,7 @@ int as1115_digit_intensity(as1115_t *dev, uint8_t intensity);
  * @return -AS1115_I2C_ERROR if acquiring of I2C bus fails
  * @return -AS1115_UNKNOWN_DECODER if decoder is unknown
  */
-int as1115_select_decoder(as1115_t d*ev, uint8_t decoder);
+int as1115_select_decoder(as1115_t *dev, uint8_t decoder);
 
 /**
  * @brief Run test.
