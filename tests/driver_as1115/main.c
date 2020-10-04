@@ -150,12 +150,30 @@ int global_intensity(int argc, char **argv)
     return 0;
 }
 
+int set_digit_intensity(int argc, char **argv)
+{
+    if (argc != 3) {
+        puts("usage: set_digit_intensity <digit no (0-7)> <intensity (0x0-0xf)>");
+    } else {
+        uint8_t digit = atoi(argv[1]);
+        uint8_t intensity = strtol(argv[2], NULL, 16);
+
+        int rc = as1115_digit_intensity(&as1115_dev, digit, intensity);
+        if (rc != AS1115_OK) {
+            printf("Set decode on digit %i failed! rc=%i\n", digit, rc);
+            return rc;
+        }
+    }
+    return 0;
+}
+
 static const shell_command_t shell_commands[] = {
     { "power_on", "Turn the device on.", power_on },
     { "power_off", "Turn the device off.", power_off },
     { "set_digit", "Set the digit value.", set_digit },
     { "enable_decode", "Enables/disables the decoder of the digit.", set_digit_enable_decode },
     { "global_intensity", "Set the global display intensity", global_intensity },
+    { "digit_intensity", "Set the intensity of a digit.", set_digit_intensity },
     { "test_disp", "Optical display test.", test_disp },
     { "keyscan", "Read the keyscan register.", keyscan },
     { NULL, NULL, NULL }
