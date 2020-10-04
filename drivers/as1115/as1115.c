@@ -164,6 +164,7 @@ int as1115_set_decode_mode(as1115_t *dev, uint8_t digit, uint8_t enable)
     if (rc != 0) {
         return rc;
     }
+    DEBUG("[as1115] decode reg = %ui\n", data);
 
     if (enable) {
         data |= (1 << digit);
@@ -171,6 +172,7 @@ int as1115_set_decode_mode(as1115_t *dev, uint8_t digit, uint8_t enable)
         data &= ~(1 << digit);
     }
 
+    DEBUG("[as1115] decode reg = %ui\n", data);
     rc = _write_reg(dev, AS1115_REG_DECODEMODE, data);
     if (rc != 0) {
         return rc;
