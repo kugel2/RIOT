@@ -138,7 +138,7 @@ int as1115_set_digit(as1115_t *dev, uint8_t digit, uint8_t value)
 {
     assert(dev);
 
-    if (digit > AS1115_MAXNUM_DIGIT) {
+    if (digit > AS1115_MAXIMUM_DIGIT) {
         return -AS1115_DIGIT_OUT_OF_RANGE_ERROR;
     }
 
@@ -156,7 +156,7 @@ int as1115_set_decode_mode(as1115_t *dev, uint8_t digit, uint8_t enable)
     int rc;
     uint8_t data;
 
-    if (digit > AS1115_MAXNUM_DIGIT) {
+    if (digit > AS1115_MAXIMUM_DIGIT) {
         return -AS1115_DIGIT_OUT_OF_RANGE_ERROR;
     }
 
@@ -205,7 +205,7 @@ int as1115_digit_intensity(as1115_t *dev, uint8_t digit, uint8_t intensity)
     uint8_t data;
     uint8_t reg;
 
-    if (digit > AS1115_MAXNUM_DIGIT) {
+    if (digit > AS1115_MAXIMUM_DIGIT) {
         return -AS1115_DIGIT_OUT_OF_RANGE_ERROR;
     }
 

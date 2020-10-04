@@ -80,7 +80,7 @@ typedef enum {
  * @brief   Maximum digit number
  *          for the AS1115 0-7
  */
-#define AS1115_MAXNUM_DIGIT                     (7)
+#define AS1115_MAXIMUM_DIGIT                     (7)
 
 /**
  * @brief   The maximum brightness of a digit
