@@ -45,6 +45,7 @@ typedef struct {
  */
 typedef struct {
     as1115_params_t params; /**< Device initialisation parameters */
+    uint8_t digit_intensity[4]; /**< Individual digit intensity */
 } as1115_t;
 
 /**
@@ -173,10 +174,19 @@ int as1115_global_intensity(as1115_t *dev, uint8_t intensity);
  * @return -AS1115_DIGIT_OUT_OF_RANGE_ERROR if the digit is out of range
  * @return -AS1115_PARAMETER_OUT_OF_RANGE_ERROR if the intensity value > 0xF
  */
-int as1115_digit_intensity(as1115_t *dev, uint8_t intensity);
+int as1115_digit_intensity(as1115_t *dev, uint8_t digit, uint8_t intensity);
 
 /**
  * @brief Set the digit decoder.
+ * 
+ * @note The global intensity overrides the individual intensity on the ic
+ *       but the individual intensity is still stored in memory and when one
+ *       of the two digits is changed both are set back to their individual
+ *       intensity.
+ * 
+ * @note The digit intensity registers always read back as 0x00 so the current
+ *       value is saved in memory or else the second intensity value of the 
+ *       other digit is lost.
  * 
  * @param[in] dev       Device descriptor of the AS1115
  * @param[in] decoder   Type of decoder:

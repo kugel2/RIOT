@@ -55,6 +55,11 @@ int as1115_init(as1115_t *dev, const as1115_params_t *params)
     assert(params);
 
     dev->params = *params;
+    
+    for (size_t i = 0; i < 4; i++)
+    {
+        dev->digit_intensity[i] = 0;
+    }
 
     i2c_init(dev->params.i2c_dev);
 
@@ -180,7 +185,7 @@ int as1115_global_intensity(as1115_t *dev, uint8_t intensity)
     int rc;
 
     if (intensity > AS1115_MAXIMUM_INTENSITY) {
-        return -AS1115_INTENSITY_OUT_OF_RANGE_ERROR;
+        return -AS1115_PARAMETER_OUT_OF_RANGE_ERROR;
     }
 
     rc = _write_reg(dev, AS1115_REG_GLOBALINTENSITY, intensity);
@@ -195,6 +200,7 @@ int as1115_digit_intensity(as1115_t *dev, uint8_t digit, uint8_t intensity)
 {
     assert(dev);
     int rc;
+    uint8_t data;
     uint8_t reg;
 
     if (digit > AS1115_MAXNUM_DIGIT) {
@@ -205,17 +211,29 @@ int as1115_digit_intensity(as1115_t *dev, uint8_t digit, uint8_t intensity)
         return -AS1115_PARAMETER_OUT_OF_RANGE_ERROR;
     }
 
-    rc = _read_reg(dev, )
+    reg = AS1115_REG_INTENSITY_DIG01 + (digit / 2);
+
+    data = dev->digit_intensity[digit/2];
+    // rc = _read_reg(dev, reg, &data);
+    // if (rc != 0) {
+    //     return rc;
+    // }
 
     if (digit % 2 == 0) {
-        reg = reg & 0xF0;
+        data = data & 0xF0;
     } else {
         intensity = (intensity << 4);
-        reg = reg & 0xF;
+        data = data & 0xF;
     }
-    reg = reg | intensity;
+    DEBUG("[as1115] change digit %i intensity to %i. reg=%#x, data=%#x\n", digit, intensity, reg, data);
+    data = data | intensity;
 
-    rc = _write_reg(dev, )
+    dev->digit_intensity[digit/2] = data;
+
+    rc = _write_reg(dev, reg, data);
+    if (rc != 0) {
+        return rc;
+    }
 
     return AS1115_OK;
 }
